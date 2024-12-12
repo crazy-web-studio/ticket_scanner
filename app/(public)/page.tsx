@@ -18,7 +18,7 @@ export default function Home() {
         <Image src={cwsLogo} alt="Crazu Web Studio Logo" width={35} height={41} className="mb-2" />
         <span className="text-xs">Powered by</span>
         <h2 className="text-base font-medium ">Crazy Web Studio</h2>
-        <Link href="https://crazywebstudio.com" className="hover:underline">
+        <Link href="https://crazywebstudio.co.th" className="hover:underline">
           Contact us
         </Link>
       </div>

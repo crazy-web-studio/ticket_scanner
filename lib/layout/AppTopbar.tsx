@@ -1,20 +1,18 @@
-import React from "react";
+"use client";
 import { SidebarTrigger } from "@/lib/ui/sidebar";
 import { Button } from "../ui/button";
-import { Link, ScanLine } from "lucide-react";
+import { ScanLine } from "lucide-react";
+import Link from "next/link";
 
 export default function AppTopbar() {
   return (
     <div className="flex items-center justify-between p-5 border-b border-border ">
-      <Button variant="outline" size="auto">
-        <SidebarTrigger className="!size-6" />
-      </Button>
-
-      <Button variant="outline" size="auto">
-        <Link href="/dashboard/scann">
+      <SidebarTrigger className="!size-6" />
+      <Link href="/dashboard/scan">
+        <Button variant="outline" size="auto">
           <ScanLine className="!size-6" />
-        </Link>
-      </Button>
+        </Button>
+      </Link>
     </div>
   );
 }

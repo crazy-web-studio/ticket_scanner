@@ -17,7 +17,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   };
   return (
     <div className="mb-4">
-      <Input type="text" placeholder="Search tickets..." value={query} onChange={handleChange} className="w-full" />
+      <Input type="text" placeholder="Search tickets..." value={query} onChange={handleChange} className="w-full h-12" />
     </div>
   );
 }

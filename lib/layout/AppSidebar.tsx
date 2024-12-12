@@ -25,7 +25,7 @@ export default function AppSidebar() {
           <Separator />
           <SidebarMenuItem className="px-2">
             <SidebarMenuButton asChild>
-              <Link href="/dashboard/scann" className="flex items-center gap-2">
+              <Link href="/dashboard/scan" className="flex items-center gap-2">
                 <ScanLine />
                 <span>Scann Ticket</span>
               </Link>

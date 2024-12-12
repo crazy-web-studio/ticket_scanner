@@ -11,3 +11,17 @@ export type Ticket = {
     allowed_checkins: number;
   };
 };
+
+export type CheckInResponse = {
+  status: number;
+  previous_status: string;
+  pass: number;
+  name: string;
+  payment_date: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  checksum: string;
+  custom_fields: [string, string][];
+};
