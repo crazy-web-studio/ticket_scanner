@@ -8,9 +8,7 @@ export default function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="flex items-center justify-between p-5">
-        <Link href="/">
-          <h2>Ticket Scanner</h2>
-        </Link>
+        <h2>Ticket Scanner</h2>
       </SidebarHeader>
 
       <SidebarContent>
@@ -18,19 +16,19 @@ export default function AppSidebar() {
           <Separator />
           <SidebarMenuItem className="px-2">
             <SidebarMenuButton asChild>
-              <div>
+              <Link href="/dashboard" className="flex items-center gap-2">
                 <List />
                 <span>List of Tickets</span>
-              </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <Separator />
           <SidebarMenuItem className="px-2">
             <SidebarMenuButton asChild>
-              <div>
+              <Link href="/dashboard/scann" className="flex items-center gap-2">
                 <ScanLine />
                 <span>Scann Ticket</span>
-              </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <Separator />

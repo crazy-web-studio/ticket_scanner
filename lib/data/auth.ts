@@ -58,25 +58,13 @@ export async function getAuthData() {
     const eventId = cookies().get("eventId")?.value;
 
     if (!websiteUrl || !eventId) {
-      return {
-        status: false,
-        message: "No auth data found. Please login again.",
-      };
+      return null;
     } else {
-      return {
-        status: true,
-        data: {
-          websiteUrl,
-          eventId,
-        },
-      };
+      return { websiteUrl, eventId };
     }
   } catch (error) {
     console.error("Error retrieving auth data:", error);
-    return {
-      status: false,
-      message: "An unexpected error occurred. Please try again later.",
-    };
+    return null;
   }
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Input } from "@/lib/ui/input";
+import { useState } from "react";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -15,7 +15,6 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     setQuery(newQuery);
     onSearch(newQuery);
   };
-
   return (
     <div className="mb-4">
       <Input type="text" placeholder="Search tickets..." value={query} onChange={handleChange} className="w-full" />
