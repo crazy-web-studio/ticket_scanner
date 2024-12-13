@@ -5,6 +5,9 @@ interface GlobalStore {
   eventId: string;
   setWebsiteUrl: (websiteUrl: string) => void;
   setEventId: (eventId: string) => void;
+
+  selectedTicketCategory: "sold" | "checked" | "to_check";
+  setSelectedTicketCategory: (selectedTicketCategory: "sold" | "checked" | "to_check") => void;
 }
 
 export const useGlobalStore = create<GlobalStore>()((set) => ({
@@ -13,4 +16,7 @@ export const useGlobalStore = create<GlobalStore>()((set) => ({
 
   setWebsiteUrl: (websiteUrl) => set({ websiteUrl }),
   setEventId: (eventId) => set({ eventId }),
+
+  selectedTicketCategory: "sold",
+  setSelectedTicketCategory: (selectedTicketCategory) => set({ selectedTicketCategory }),
 }));

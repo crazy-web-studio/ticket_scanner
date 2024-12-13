@@ -3,6 +3,7 @@ import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuButton, SidebarMenuIte
 import { Separator } from "@/lib/ui/separator";
 import LogoutButton from "../components/LogoutButton";
 import { List, ScanLine } from "lucide-react";
+import ThemeButton from "@/lib/components/ThemeButton";
 
 export default function AppSidebar() {
   return (
@@ -37,6 +38,11 @@ export default function AppSidebar() {
 
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <ThemeButton />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <LogoutButton />

@@ -2,7 +2,6 @@
 
 import { Input } from "@/lib/ui/input";
 import { useState } from "react";
-
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }

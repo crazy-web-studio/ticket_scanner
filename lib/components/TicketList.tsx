@@ -3,34 +3,59 @@ import SearchBar from "./SearchBar";
 import { Ticket } from "@/lib/types/ticket";
 import { Card, CardContent } from "@/lib/ui/card";
 import { displayCheckedInStatus } from "@/lib/functions/checkin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/ui/dialog";
+import { useGlobalStore } from "@/lib/store/globalStore";
 import { Separator } from "../ui/separator";
 
 export default function TicketList({ ticketData }: { ticketData: Ticket[] }) {
-  const ticketsWithoutPagination = ticketData.slice(0, -1);
-  const [filteredTickets, setFilteredTickets] = useState<Ticket[]>(ticketsWithoutPagination);
+  const { selectedTicketCategory } = useGlobalStore();
+
+  // Remove non-ticket objects from ticketData
+  const cleanedTicketData = ticketData.slice(0, -1);
+
+  // Single state for managing filtered tickets
+  const [displayTickets, setDisplayTickets] = useState<Ticket[]>(cleanedTicketData);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Combined filtering effect
+  useEffect(() => {
+    let filteredTickets = cleanedTicketData;
+
+    // Category filtering
+    if (selectedTicketCategory === "to_check") {
+      filteredTickets = filteredTickets.filter((ticket) => ticket.data.date_checked === "");
+    } else if (selectedTicketCategory === "checked") {
+      filteredTickets = filteredTickets.filter((ticket) => ticket.data.date_checked !== "");
+    }
+
+    // Search filtering
+    if (searchQuery) {
+      const lowercasedQuery = searchQuery.toLowerCase();
+      filteredTickets = filteredTickets.filter(
+        (ticket) =>
+          ticket.data.buyer_first.toLowerCase().includes(lowercasedQuery) ||
+          ticket.data.buyer_last.toLowerCase().includes(lowercasedQuery) ||
+          ticket.data.transaction_id.toLowerCase().includes(lowercasedQuery)
+      );
+    }
+
+    setDisplayTickets(filteredTickets);
+  }, [selectedTicketCategory, searchQuery]);
 
   const handleSearch = (query: string) => {
-    const lowercasedQuery = query.toLowerCase();
-    const filtered = ticketsWithoutPagination.filter(
-      (ticket) =>
-        ticket.data.buyer_first.toLowerCase().includes(lowercasedQuery) ||
-        ticket.data.buyer_last.toLowerCase().includes(lowercasedQuery) ||
-        ticket.data.transaction_id.toLowerCase().includes(lowercasedQuery)
-    );
-    setFilteredTickets(filtered);
+    setSearchQuery(query);
   };
 
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
       <div className="space-y-4">
-        {filteredTickets.map((ticket) => (
+        {displayTickets.map((ticket) => (
           <Dialog key={ticket.data.transaction_id}>
             <DialogTrigger asChild>
-              <Card className="overflow-hidden">
-                <CardContent className="p-4">
+              <Card className="overflow-hidden hover:border-foreground cursor-pointer">
+                <CardContent className="p-4 ">
                   <h3 className="text-lg font-bold">
                     {ticket.data.buyer_first} {ticket.data.buyer_last}
                   </h3>
