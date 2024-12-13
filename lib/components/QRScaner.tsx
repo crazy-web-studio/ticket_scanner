@@ -5,40 +5,45 @@ import { IDetectedBarcode } from "@yudiel/react-qr-scanner";
 import { checkInTicket } from "@/lib/data/checkin";
 import SacnnedTicket from "./ScannedTicket";
 import { CheckInResponse } from "@/lib/types/ticket";
+import Loader from "./Loader";
 
 export default function QRScaner({ websiteUrl, eventId }: { websiteUrl: string; eventId: string }) {
   const [ticketScanned, setTicketScanned] = useState(false);
-  const [ticketId, setTicketId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [ticketResult, setTicketResult] = useState<CheckInResponse | null>(null);
 
   const handleScan = (result: IDetectedBarcode[]) => {
+    setTicketResult(null);
     if (result.length !== 0 && result[0].rawValue !== "") {
-      setTicketId(result[0].rawValue);
-      setTicketResult(null);
-      setTicketScanned(true);
-
       const processTicket = async () => {
+        setIsLoading(true);
         try {
           const success = await checkInTicket(websiteUrl, eventId, result[0].rawValue);
 
-          // Type guard to check if the result is a CheckInResponse
-          const isCheckInResponse = (obj: any): obj is CheckInResponse => {
-            return obj !== null && typeof obj === "object" && "status" in obj && "name" in obj && "payment_date" in obj;
+          // Check if the response is a CheckInResponse or a string
+          const checkResponse = (response: CheckInResponse | string | null) => {
+            if (typeof response === "string" || response === null) {
+              return false;
+            } else {
+              return true;
+            }
           };
 
-          if (isCheckInResponse(success)) {
-            setTicketResult(success);
+          if (checkResponse(success)) {
+            setIsLoading(false);
             setTicketScanned(true);
+            setTicketResult(success);
           } else {
-            // Handle non-CheckInResponse result (e.g., error string)
             console.error("Check-in failed:", success);
+            setIsLoading(false);
+            setTicketScanned(true);
             setTicketResult(null);
-            setTicketScanned(false);
           }
         } catch (error) {
           console.error("Error processing ticket:", error);
+          setIsLoading(false);
+          setTicketScanned(true);
           setTicketResult(null);
-          setTicketScanned(false);
         }
       };
 
@@ -46,5 +51,13 @@ export default function QRScaner({ websiteUrl, eventId }: { websiteUrl: string; 
     }
   };
 
-  return <>{ticketScanned ? <SacnnedTicket ticketResult={ticketResult} setTicketScanned={setTicketScanned} /> : <Scanner onScan={handleScan} />}</>;
+  return (
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>{ticketScanned ? <SacnnedTicket ticketResult={ticketResult} setTicketScanned={setTicketScanned} /> : <Scanner onScan={handleScan} />}</>
+      )}
+    </>
+  );
 }
