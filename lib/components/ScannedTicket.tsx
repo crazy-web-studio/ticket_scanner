@@ -13,7 +13,7 @@ export default function ScannedTicket({
 }) {
   if (!ticketResult) {
     return (
-      <div className="flex items-center justify-center w-full max-w-[500px] h-full">
+      <div className="flex items-center justify-center w-full max-w-[500px] mt-10">
         <Card className="overflow-hidden">
           <CardContent className="p-4">
             <div className="py-4 px-8 w-full border rounded-lg bg-red-500/5 border-red-700 mb-5">
@@ -42,7 +42,7 @@ export default function ScannedTicket({
   console.log(ticketResult);
 
   return (
-    <div className="flex items-center justify-center w-full max-w-[500px] h-full">
+    <div className="flex items-center justify-center w-full max-w-[500px] mt-10">
       <Card className="overflow-hidden">
         <CardContent className="p-4">
           <div

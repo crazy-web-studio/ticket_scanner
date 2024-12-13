@@ -13,7 +13,7 @@ export default function Layout({
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <div className="flex flex-col h-[100vh]">
+          <div className="flex flex-col">
             <AppTopbar />
             {children}
           </div>
