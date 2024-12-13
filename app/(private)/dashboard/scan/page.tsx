@@ -3,7 +3,7 @@ import QRScaner from "@/lib/components/QRScaner";
 
 export default function Scan() {
   return (
-    <div className="flex items-center justify-center p-5">
+    <div className="flex items-center justify-center p-5 h-full">
       <QRScaner />
     </div>
   );
