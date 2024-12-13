@@ -48,7 +48,7 @@ export default function ScannedTicket({
           <div
             className="p-4 w-full border rounded-lg mb-5"
             style={{
-              backgroundColor: ticketApprouved(ticketResult.status) ? "#f0fdf4" : "rgba(239, 68, 68, 0.05)",
+              backgroundColor: ticketApprouved(ticketResult.status) ? "rgba(34, 197, 94, 0.05)" : "rgba(239, 68, 68, 0.05)",
               borderColor: ticketApprouved(ticketResult.status) ? "#15803d" : "#b91c1c",
             }}
           >

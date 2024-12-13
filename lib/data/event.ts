@@ -13,10 +13,10 @@ export async function getEventData(websiteUrl: string, eventId: string) {
     if (data.pass) {
       return data;
     } else {
-      return false;
+      return null;
     }
   } catch (error) {
     console.error("Error retrieving event data:", error);
-    return false;
+    return null;
   }
 }

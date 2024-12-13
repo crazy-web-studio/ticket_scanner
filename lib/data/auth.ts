@@ -2,6 +2,11 @@
 import { cookies } from "next/headers";
 import { CheckCredentialsResponse } from "../types/auth";
 
+export interface AuthProps {
+  websiteUrl: string;
+  eventId: string;
+}
+
 export async function login(websiteUrl: string, eventId: string) {
   try {
     const response = await fetch(`${websiteUrl}/tc-api/${eventId}/check_credentials`, {

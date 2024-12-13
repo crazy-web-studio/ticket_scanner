@@ -6,8 +6,9 @@ import { checkInTicket } from "@/lib/data/checkin";
 import SacnnedTicket from "./ScannedTicket";
 import { CheckInResponse } from "@/lib/types/ticket";
 import Loader from "./Loader";
+import { getAuthData } from "@/lib/data/auth";
 
-export default function QRScaner({ websiteUrl, eventId }: { websiteUrl: string; eventId: string }) {
+export default function QRScaner() {
   const [ticketScanned, setTicketScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [ticketResult, setTicketResult] = useState<CheckInResponse | null>(null);
@@ -18,7 +19,11 @@ export default function QRScaner({ websiteUrl, eventId }: { websiteUrl: string; 
       const processTicket = async () => {
         setIsLoading(true);
         try {
-          const success = await checkInTicket(websiteUrl, eventId, result[0].rawValue);
+          const authData = await getAuthData();
+          if (!authData) {
+            throw new Error("Authentication failed");
+          }
+          const success = await checkInTicket(authData.websiteUrl, authData.eventId, result[0].rawValue);
 
           // Check if the response is a CheckInResponse or a string
           const checkResponse = (response: CheckInResponse | string | null) => {

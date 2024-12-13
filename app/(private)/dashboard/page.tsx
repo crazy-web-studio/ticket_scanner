@@ -1,37 +1,71 @@
+"use client";
+
 import { getAuthData } from "@/lib/data/auth";
 import TicketList from "@/lib/components/TicketList";
 import { getEventData } from "@/lib/data/event";
 import { getTickets } from "@/lib/data/ticket";
 import ErrorDisplay from "@/lib/components/ErrorMessage";
 import EventInfo from "@/lib/components/EventInfo";
+import { useEffect, useState } from "react";
+import { EventData } from "@/lib/types/event";
+import { Ticket } from "@/lib/types/ticket";
+import Loader from "@/lib/components/Loader";
 
-export default async function Dashboard() {
-  const data = await getAuthData();
-  if (!data) {
-    return <ErrorDisplay message="Event not found!" />;
-  }
-  const { websiteUrl, eventId } = data;
+export default function Dashboard() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [eventData, setEventData] = useState<EventData | null>(null);
+  const [ticketsData, setTicketsData] = useState<Ticket[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const eventData = await getEventData(websiteUrl, eventId);
-  if (!eventData) {
-    return <ErrorDisplay message="Unable to load event data!" />;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const authData = await getAuthData();
+        if (!authData) {
+          throw new Error("Authentication failed");
+        }
+
+        const [eventResult, ticketsResult] = await Promise.all([
+          getEventData(authData.websiteUrl, authData.eventId),
+          getTickets(authData.websiteUrl, authData.eventId),
+        ]);
+
+        if (!eventResult || !ticketsResult) {
+          throw new Error("Failed to load event or ticket data");
+        }
+
+        setEventData(eventResult);
+        setTicketsData(ticketsResult);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An unexpected error occurred");
+        setEventData(null);
+        setTicketsData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
   }
-  const ticketsData = await getTickets(websiteUrl, eventId);
-  if (!ticketsData) {
-    return <ErrorDisplay message="Unable to load tickets data!" />;
+
+  if (error || !eventData || !ticketsData) {
+    return <ErrorDisplay message={error || "Failed to load event data!"} />;
   }
 
   return (
     <div className="container mx-auto p-4 mt-8">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold">Event : {eventData.event_name}</h2>
+      <div className="mb-5">
+        <h2 className="text-2xl font-bold">Event: {eventData.event_name}</h2>
       </div>
       <EventInfo eventData={eventData} />
-      <div className="">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Ticket List</h2>
-          <TicketList ticketData={ticketsData} />
-        </div>
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-4">Ticket List</h2>
+        <TicketList ticketData={ticketsData} />
       </div>
     </div>
   );
