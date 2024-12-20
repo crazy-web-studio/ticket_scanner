@@ -1,7 +1,7 @@
 export function displayCheckedInStatus(dateChecked: string) {
   if (dateChecked === "") {
-    return "Not checked in";
+    return false;
   } else {
-    return "Checked in";
+    return true;
   }
 }

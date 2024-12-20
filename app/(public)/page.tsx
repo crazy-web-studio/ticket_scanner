@@ -3,15 +3,16 @@ import LoginForm from "@/lib/components/Login";
 import Image from "next/image";
 import cwsLogo from "@/lib/assets/cws-logo.svg";
 import Link from "next/link";
+import illuzionLogo from "@/lib/assets/illuzion-logo-light-mode.png";
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-between w-full gap-10 py-10">
       <div>
-        <h1 className="opacity-0"></h1>
+        <Image src={illuzionLogo} alt="Business logo" width={300} height={300} />
       </div>
       <div className="flex flex-col items-center justify-center">
-        <h1 className="mb-7 text-4xl font-bold">Ticket Scanner</h1>
+        <h1 className="mb-7 text-2xl font-bold">Ticket Scanner</h1>
         <LoginForm />
       </div>
       <div className="flex flex-col justify-center items-center">

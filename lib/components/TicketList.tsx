@@ -2,7 +2,6 @@
 import SearchBar from "./SearchBar";
 import { Ticket } from "@/lib/types/ticket";
 import { Card, CardContent } from "@/lib/ui/card";
-import { displayCheckedInStatus } from "@/lib/functions/checkin";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/lib/ui/dialog";
 import { useGlobalStore } from "@/lib/store/globalStore";
@@ -47,6 +46,14 @@ export default function TicketList({ ticketData }: { ticketData: Ticket[] }) {
     setSearchQuery(query);
   };
 
+  function displayCheckedInStatus(dateChecked: string) {
+    if (dateChecked === "") {
+      return <span className="text-sm text-red-500">Not checked in</span>;
+    } else {
+      return <span className="text-sm text-green-500">Checked in</span>;
+    }
+  }
+
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
@@ -62,9 +69,8 @@ export default function TicketList({ ticketData }: { ticketData: Ticket[] }) {
                   <p className="text-sm text-gray-500">
                     ID: {ticket.data.transaction_id} | Purchased: {ticket.data.payment_date}
                   </p>
-                  <p className="text-sm mt-2">
-                    Type : {ticket.data.custom_fields[0][1]} | Status: {displayCheckedInStatus(ticket.data.date_checked)}
-                  </p>
+                  <p className="text-sm mt-2 mb-1">Type : {ticket.data.custom_fields[0][1]}</p>
+                  <p className="text-sm">Status: {displayCheckedInStatus(ticket.data.date_checked)}</p>
                 </CardContent>
               </Card>
             </DialogTrigger>

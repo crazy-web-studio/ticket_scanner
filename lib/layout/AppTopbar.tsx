@@ -3,11 +3,15 @@ import { SidebarTrigger } from "@/lib/ui/sidebar";
 import { Button } from "../ui/button";
 import { ScanLine, List } from "lucide-react";
 import Link from "next/link";
+import BusinessLogo from "../components/BusinessLogo";
 
 export default function AppTopbar() {
   return (
     <div className="flex items-center justify-between p-5 border-b border-border ">
       <SidebarTrigger className="!size-6" />
+
+      <BusinessLogo />
+
       <div className="flex gap-5">
         <Link href="/dashboard">
           <Button variant="outline" size="auto">
